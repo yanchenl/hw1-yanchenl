@@ -24,7 +24,7 @@
      filesystem.  The Java class for this collection reader is in uima_core.jar. -->
 <collectionReaderDescription xmlns="http://uima.apache.org/resourceSpecifier">
     <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-    <implementationName>org.apache.uima.examples.FileSystemCollectionReader</implementationName>
+    <implementationName>yanchenl.FileSystemCollectionReader</implementationName>
     <processingResourceMetaData>
         <name>File System Collection Reader</name>
         <description>Reads files from the filesystem.  This CollectionReader may be used
@@ -95,7 +95,8 @@
         <typeSystemDescription>
           <imports>
             <import name="org.apache.uima.examples.SourceDocumentInformation"/>
-          </imports>
+          <import name="descriptors.typeSystemDescriptor"/>
+      </imports>
         </typeSystemDescription>
 
         <capabilities>

@@ -2,7 +2,7 @@
 
 <analysisEngineDescription xmlns="http://uima.apache.org/resourceSpecifier">
   <frameworkImplementation>org.apache.uima.java</frameworkImplementation>
-  <primitive>true</primitive>  <annotatorImplementationName>org.apache.uima.examples.RoomNumberAnnotator</annotatorImplementationName>
+  <primitive>true</primitive>  <annotatorImplementationName>yanchenl.GeneNameAnnotator</annotatorImplementationName>
   <analysisEngineMetaData>
     <name>aeDescriptor</name>
     <description/>
@@ -11,13 +11,9 @@
     <configurationParameters/>
     <configurationParameterSettings/>
     <typeSystemDescription>
-      <types>
-        <typeDescription>
-          <name>org.apache.uima.examples.types.RoomNumber</name>
-          <description/>
-          <supertypeName>uima.tcas.Annotation</supertypeName>
-        </typeDescription>
-      </types>
+      <imports>
+        <import name="descriptors.typeSystemDescriptor"/>
+      </imports>
     </typeSystemDescription>
     <typePriorities/>
     <fsIndexCollection/>

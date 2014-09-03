@@ -9,7 +9,7 @@
                 <nameValuePair>
                     <name>InputDirectory</name>
                     <value>
-                        <string>/root/workspace/hw1-yanchenl/src/main/resources/data</string>
+                        <string>/root/git/hw1-yanchenl/hw1-yanchenl/src/main/resources/data</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>
@@ -43,7 +43,7 @@
                 <nameValuePair>
                     <name>OutputDirectory</name>
                     <value>
-                        <string>/root/workspace/hw1-yanchenl/src/main/resources/data/processed</string>
+                        <string>/root/git/hw1-yanchenl/hw1-yanchenl/src/main/resources/data/processed</string>
                     </value>
                 </nameValuePair>
             </configurationParameterSettings>

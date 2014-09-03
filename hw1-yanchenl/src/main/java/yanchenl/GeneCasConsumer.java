@@ -1,43 +1,25 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
-package org.apache.uima.examples;
+package yanchenl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.uima.cas.CAS;
 import org.apache.uima.cas.CASException;
 import org.apache.uima.cas.FSIterator;
-//import org.apache.uima.cas.impl.XmiCasSerializer;
+import org.apache.uima.cas.impl.XmiCasSerializer;
 import org.apache.uima.collection.CasConsumer_ImplBase;
 import org.apache.uima.examples.SourceDocumentInformation;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
-//import org.apache.uima.util.XMLSerializer;
+import org.apache.uima.util.XMLSerializer;
 import org.xml.sax.SAXException;
+
+import yanchenl.types.Sentence;
 
 /**
  * A simple CAS consumer that writes the CAS to XMI format.
@@ -47,7 +29,7 @@ import org.xml.sax.SAXException;
  * <li><code>OutputDirectory</code> - path to directory into which output files will be written</li>
  * </ul>
  */
-public class XmiWriterCasConsumer extends CasConsumer_ImplBase {
+public class GeneCasConsumer extends CasConsumer_ImplBase {
   /**
    * Name of configuration parameter that must be set to the path of a directory into which the
    * output files will be written.
@@ -100,6 +82,7 @@ public class XmiWriterCasConsumer extends CasConsumer_ImplBase {
         if (fileLoc.getOffsetInSource() > 0) {
           outFileName += ("_" + fileLoc.getOffsetInSource());
         }
+        outFileName = outFileName.substring(0,outFileName.lastIndexOf(".")); //delete suffix
         outFileName += ".out";
         outFile = new File(mOutputDir, outFileName);
         modelFileName = mOutputDir.getAbsolutePath() + "/" + inFile.getName() + ".ecore";
@@ -108,16 +91,31 @@ public class XmiWriterCasConsumer extends CasConsumer_ImplBase {
       }
     }
     if (outFile == null) {
-      outFile = new File(mOutputDir, "doc" + mDocNum++ + ".out");
+      outFile = new File(mOutputDir, "doc" + mDocNum++ + ".out");     
     }
-    // serialize XCAS and write to output file
+    
+
+    
+    FSIterator<Annotation> fs = jcas.getAnnotationIndex(Sentence.type).iterator();
+    String mytext = null;
+
+    while(fs.hasNext()){
+      Annotation annotation = fs.next();
+      int begin = annotation.getBegin();
+      int end = annotation.getEnd();
+      String id = ((Sentence) annotation).getId();
+      String text = ((Sentence) annotation).getText();
+      mytext = id + "|" + begin + " " + end + "|" + text.substring(begin, end);
+    }
+    // write to output file
     try {
-      writeXmi(jcas.getCas(), outFile, modelFileName);
+      writeXmi(jcas.getCas(), outFile, modelFileName, mytext);
     } catch (IOException e) {
       throw new ResourceProcessException(e);
     } catch (SAXException e) {
       throw new ResourceProcessException(e);
     }
+    
   }
 
   /**
@@ -132,21 +130,13 @@ public class XmiWriterCasConsumer extends CasConsumer_ImplBase {
    * 
    * @throws ResourceProcessException
    */
-  private void writeXmi(CAS aCas, File name, String modelFileName) throws IOException, SAXException {
+  private void writeXmi(CAS aCas, File name, String modelFileName, String mytext) throws IOException, SAXException {
     FileOutputStream out = null;
-    InputStream in = new FileInputStream(name);
-    out = new FileOutputStream(name);
+
     try {
-      byte[] buffer = new byte[1024];
-      while (true) {
-        int byteRead = in.read(buffer);
-        if (byteRead == -1)
-          break;
-        out.write(buffer, 0, byteRead);
-      }
+      out = new FileOutputStream(name);
+      out.write(mytext.getBytes());
     } finally {
-      if (in != null)
-        in.close();
       if (out != null) {
         out.close();
       }
