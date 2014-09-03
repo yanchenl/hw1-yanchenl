@@ -1,3 +1,8 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF)
+ * This file is revised from uimaj-example provided by apache uima
+ */
+
 package yanchenl;
 
 import java.io.File;
@@ -82,8 +87,8 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
         if (fileLoc.getOffsetInSource() > 0) {
           outFileName += ("_" + fileLoc.getOffsetInSource());
         }
-        outFileName = outFileName.substring(0,outFileName.lastIndexOf(".")); //delete suffix
-        outFileName += ".out";
+//        outFileName = outFileName.substring(0,outFileName.lastIndexOf(".")); //delete suffix
+        outFileName = "hw1-yanchenl.out";
         outFile = new File(mOutputDir, outFileName);
         modelFileName = mOutputDir.getAbsolutePath() + "/" + inFile.getName() + ".ecore";
       } catch (MalformedURLException e1) {
@@ -105,24 +110,20 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
       int end = annotation.getEnd();
       String id = ((Sentence) annotation).getId();
       String text = ((Sentence) annotation).getText();
-      mytext = id + "|" + begin + " " + end + "|" + text.substring(begin, end);
-    }
-    // write to output file
-    try {
-      writeXmi(jcas.getCas(), outFile, modelFileName, mytext);
-    } catch (IOException e) {
-      throw new ResourceProcessException(e);
-    } catch (SAXException e) {
-      throw new ResourceProcessException(e);
-    }
-    
+      mytext = id + "|" + begin + " " + end + "|" + text + "\n";
+      try {
+        writeFile(jcas.getCas(), outFile, modelFileName, mytext);
+      } catch (IOException e) {
+        throw new ResourceProcessException(e);
+      } catch (SAXException e) {
+        throw new ResourceProcessException(e);
+      }
+    } 
   }
 
   /**
-   * Serialize a CAS to a file in XMI format
+   * Write a CAS to a file
    * 
-   * @param aCas
-   *          CAS to serialize
    * @param name
    *          output file
    * @throws SAXException
@@ -130,11 +131,11 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
    * 
    * @throws ResourceProcessException
    */
-  private void writeXmi(CAS aCas, File name, String modelFileName, String mytext) throws IOException, SAXException {
+  private void writeFile(CAS aCas, File name, String modelFileName, String mytext) throws IOException, SAXException {
     FileOutputStream out = null;
 
     try {
-      out = new FileOutputStream(name);
+      out = new FileOutputStream(name,true);
       out.write(mytext.getBytes());
     } finally {
       if (out != null) {

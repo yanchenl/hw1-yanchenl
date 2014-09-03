@@ -1,3 +1,8 @@
+/*
+ * This example is coming from  Stanford CoreNLP object
+ * Copied from handout of 11-693 homework 1 handout
+ */
+
 package yanchenl;
 
 import java.util.ArrayList;
@@ -21,6 +26,7 @@ public class PosTagNamedEntityRecognizer {
   private StanfordCoreNLP pipeline;
 
   public PosTagNamedEntityRecognizer() throws ResourceInitializationException {
+ // creates a StanfordCoreNLP object, with POS tagging
     Properties props = new Properties();
     props.put("annotators", "tokenize, ssplit, pos");
     pipeline = new StanfordCoreNLP(props);
@@ -32,8 +38,10 @@ public class PosTagNamedEntityRecognizer {
     pipeline.annotate(document);
     List<CoreMap> sentences = document.get(SentencesAnnotation.class);
     for (CoreMap sentence : sentences) {
+   // loop the words in the sentence
       List<CoreLabel> candidate = new ArrayList<CoreLabel>();
       for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
+        //POS tag of token
         String pos = token.get(PartOfSpeechAnnotation.class);
         if (pos.startsWith("NN")) {
           candidate.add(token);
