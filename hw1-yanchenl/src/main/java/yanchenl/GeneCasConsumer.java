@@ -87,7 +87,7 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
         if (fileLoc.getOffsetInSource() > 0) {
           outFileName += ("_" + fileLoc.getOffsetInSource());
         }
-//        outFileName = outFileName.substring(0,outFileName.lastIndexOf(".")); //delete suffix
+        // outFileName = outFileName.substring(0,outFileName.lastIndexOf(".")); //delete suffix
         outFileName = "hw1-yanchenl.out";
         outFile = new File(mOutputDir, outFileName);
         modelFileName = mOutputDir.getAbsolutePath() + "/" + inFile.getName() + ".ecore";
@@ -96,15 +96,13 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
       }
     }
     if (outFile == null) {
-      outFile = new File(mOutputDir, "doc" + mDocNum++ + ".out");     
+      outFile = new File(mOutputDir, "doc" + mDocNum++ + ".out");
     }
-    
 
-    
     FSIterator<Annotation> fs = jcas.getAnnotationIndex(Sentence.type).iterator();
     String mytext = null;
 
-    while(fs.hasNext()){
+    while (fs.hasNext()) {
       Annotation annotation = fs.next();
       int begin = annotation.getBegin();
       int end = annotation.getEnd();
@@ -118,7 +116,7 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
       } catch (SAXException e) {
         throw new ResourceProcessException(e);
       }
-    } 
+    }
   }
 
   /**
@@ -131,11 +129,12 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
    * 
    * @throws ResourceProcessException
    */
-  private void writeFile(CAS aCas, File name, String modelFileName, String mytext) throws IOException, SAXException {
+  private void writeFile(CAS aCas, File name, String modelFileName, String mytext)
+          throws IOException, SAXException {
     FileOutputStream out = null;
 
     try {
-      out = new FileOutputStream(name,true);
+      out = new FileOutputStream(name, true);
       out.write(mytext.getBytes());
     } finally {
       if (out != null) {
